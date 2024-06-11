@@ -90,7 +90,7 @@ def batching_pdf_pages(caseid,file_name):
         bach_num=0
         for start_page in range(0, num_pages, 50):
             end_page = min(start_page + 49, num_pages - 1)
-            bach_num=+1
+            bach_num=bach_num+1
             logging.info(f"Start Page: {start_page + 1}, End Page: {end_page + 1}, bach_num: {bach_num}")
 
             #preparing data for service bus 
