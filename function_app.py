@@ -87,9 +87,11 @@ def batching_pdf_pages(caseid,file_name):
         logging.info(f"num_pages value: {num_pages}")
 
         # Log start and end pages for segments of up to 50 pages
+        bach_num=0
         for start_page in range(0, num_pages, 50):
             end_page = min(start_page + 49, num_pages - 1)
-            logging.info(f"Start Page: {start_page + 1}, End Page: {end_page + 1}")
+            bach_num=+1
+            logging.info(f"Start Page: {start_page + 1}, End Page: {end_page + 1}, bach_num: {bach_num}")
 
             #preparing data for service bus 
             data = { 
@@ -97,7 +99,8 @@ def batching_pdf_pages(caseid,file_name):
                     "filename" :file_name,
                     "Subject" : "Case created successfully!" ,
                     "start_page": (start_page + 1),
-                    "end_page" : (end_page + 1)
+                    "end_page" : (end_page + 1),
+                    "bach_num" : bach_num
                 } 
             json_data = json.dumps(data)
             create_servicebus_event("split",json_data)
