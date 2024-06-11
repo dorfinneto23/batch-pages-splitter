@@ -24,6 +24,28 @@ password = os.environ.get('sql_password')
 driver= '{ODBC Driver 18 for SQL Server}'
 
 
+
+#Create event on azure service bus 
+def create_servicebus_event(queue_name, event_data):
+    try:
+        # Create a ServiceBusClient using the connection string
+        servicebus_client = ServiceBusClient.from_connection_string(connection_string_servicebus)
+
+        # Create a sender for the queue
+        sender = servicebus_client.get_queue_sender(queue_name)
+
+        with sender:
+            # Create a ServiceBusMessage object with the event data
+            message = ServiceBusMessage(event_data)
+
+            # Send the message to the queue
+            sender.send_messages(message)
+
+        print("Event created successfully.")
+    
+    except Exception as e:
+        print("An error occurred:", str(e))
+
 def batching_pdf_pages(caseid,file_name):
     try:
         logging.info(f"split_pdf_pages caseid value is: {caseid} ")
@@ -68,6 +90,17 @@ def batching_pdf_pages(caseid,file_name):
         for start_page in range(0, num_pages, 50):
             end_page = min(start_page + 49, num_pages - 1)
             logging.info(f"Start Page: {start_page + 1}, End Page: {end_page + 1}")
+
+            #preparing data for service bus 
+            data = { 
+                    "caseid" : caseid, 
+                    "filename" :file_name,
+                    "Subject" : "Case created successfully!" ,
+                    "start_page": (start_page + 1),
+                    "end_page" : (end_page + 1)
+                } 
+            json_data = json.dumps(data)
+            create_servicebus_event("split",json_data)
         return "Done"
     except Exception as e:
            return "issues"
