@@ -67,7 +67,7 @@ def batching_pdf_pages(caseid,file_name):
         # Log start and end pages for segments of up to 50 pages
         for start_page in range(0, num_pages, 50):
             end_page = min(start_page + 49, num_pages - 1)
-            print(f"Start Page: {start_page + 1}, End Page: {end_page + 1}")
+            logging.info(f"Start Page: {start_page + 1}, End Page: {end_page + 1}")
         return "Done"
     except Exception as e:
            return "issues"
