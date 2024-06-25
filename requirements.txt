@@ -5,7 +5,6 @@
 azure-functions
 azure.storage.blob
 PyPDF2
-pyodbc
 azure.servicebus
 uuid
 azure.data.tables
