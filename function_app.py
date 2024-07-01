@@ -119,7 +119,8 @@ def batching_pdf_pages(caseid,file_name):
                     "Subject" : "Case created successfully!" ,
                     "start_page": (start_page + 1),
                     "end_page" : (end_page + 1),
-                    "bach_num" : bach_num
+                    "bach_num" : bach_num,
+                    "total_pages" :num_pages
                 } 
             json_data = json.dumps(data)
             create_servicebus_event("split",json_data)
